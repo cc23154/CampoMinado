@@ -103,7 +103,7 @@ def jogada(tipo, lin, col):
                    mapa[lin][col][0] = mapa[lin][col][1]
                    pos -= 1
         else:
-            mapa[lin][col][0] = f"{Fore.RED}B{Style.RESET_ALL}"
+            mapa[lin][col][0] = "B"
             linOr = lin
             colOr = col
     else:
@@ -131,8 +131,10 @@ def printMapaFinal():
             elif type(t) != type(1):
                 if t == "M" and f[1] == "B":
                     resp.append(f"{Fore.GREEN}✔{Style.RESET_ALL}")
-                elif t == "P" and f[1] == "B":
+                if t == "M" and f[1] != "B":
                     resp.append(f"{Fore.RED}✔{Style.RESET_ALL}")
+                elif t == "P" and f[1] == "B":
+                    resp.append(f"{Fore.RED}✖{Style.RESET_ALL}")
                 elif t == "P":
                     resp.append(f"{Back.GREEN} {Style.RESET_ALL}")
                 else:
@@ -196,18 +198,18 @@ def minando():
             _ += 1
 
 altura, largura = int(input("Digite a altura do campo que deseja jogar: ")), 10
-if (altura == 0) + (largura == 0) == 0:
+if altura != 0:
     numBombas = int(input("Digite o numero de bombas que deseja: "))
     if numBombas + 1 <  altura * largura:
-        v = time()
         numJogas = 0
         mapa = [[['P', 0, 0] for _ in range(largura)] for _ in range(altura)]
         pos  = altura * largura
         minando()
         continuar = not(venceu())
+        v = time()
         while continuar:
             printMapa()
-            _ = input("Digite a linha e a coluna que deseja ativar(se quiser marcar adcione ao final um numero 0), separa por espaço os valores necessarios: ").split()
+            _ = input("Digite a linha e a coluna que deseja ativar(se quiser marcar, adcione ao final um numero 0), separa por espaço os valores necessarios: ").split()
             modo = 1
             if len(_) == 3:
                 modo = int(_[2])
@@ -223,4 +225,4 @@ if (altura == 0) + (largura == 0) == 0:
             print("Você Venceu")
         else:
             print("Você Perdeu")
-        print(f"Numero de jogadas: {numJogas}\nTempo de jogo: {time() - v}")
+        print(f"Numero de jogadas: {numJogas}\nTempo de jogo: {time() - v:.2f}s")
